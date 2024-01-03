@@ -69,7 +69,6 @@ Patch4: redhat-lsb-aarch64.patch
 Patch1000: redhat-lsb-centos-fix-release.patch
 License: GPLv2
 Group: System Environment/Base
-BuildRequires: glibc-static
 
 %ifarch %{ix86}
 %define archname ia32
@@ -165,54 +164,27 @@ Requires: pam%{?_isa}
 Requires: zlib%{?_isa}
 
 # gLSB Command and Utilities
-Requires: /bin/basename
 Requires: /bin/cat
-Requires: /bin/chgrp
 Requires: /bin/chmod
-Requires: /bin/chown
-Requires: /bin/cp
-Requires: /bin/date
-Requires: /bin/dd
-Requires: /bin/df
 Requires: /bin/dmesg
 Requires: /bin/echo
-Requires: /bin/ed
 Requires: /bin/egrep
-Requires: /bin/false
 Requires: /bin/fgrep
 Requires: /bin/find
 Requires: /bin/grep
 Requires: /bin/gunzip
 Requires: /bin/gzip
-Requires: /bin/hostname
 Requires: /bin/kill
 Requires: /bin/ln
-Requires: /bin/ls
 Requires: /bin/mailx
-Requires: /bin/mkdir
-Requires: /bin/mknod
-Requires: /bin/mktemp
 Requires: /bin/more
 Requires: /bin/mount
-Requires: /bin/mv
-Requires: /bin/nice
 Requires: /bin/ps
-Requires: /bin/pwd
 Requires: /bin/rm
-Requires: /bin/rmdir
 Requires: /bin/sed
 Requires: /bin/sh
-Requires: /bin/sleep
-Requires: /bin/sort
-Requires: /bin/stty
-Requires: /bin/sync
-Requires: /bin/tar
-Requires: /bin/touch
-Requires: /bin/true
 Requires: /bin/umount
-Requires: /bin/uname
 Requires: /bin/zcat
-Requires: /sbin/pidof
 Requires: /sbin/shutdown
 Requires: /usr/bin/[
 Requires: /usr/bin/ar
@@ -272,7 +244,6 @@ Requires: /usr/bin/paste
 Requires: /usr/bin/patch
 Requires: /usr/bin/pathchk
 #better POSIX conformance of /usr/bin/pax
-Requires: spax
 Requires: /usr/bin/pr
 Requires: /usr/bin/printf
 Requires: /usr/bin/renice
@@ -391,7 +362,6 @@ Summary: LSB Languages module support
 # Perl and Perl non-builtin modules
 Requires: /usr/bin/perl
 Requires: perl(CGI)
-Requires: perl(Class::ISA)
 Requires: perl(CPAN)
 # Locale::Constants has been Locale::Codes::Costants, so we need
 # create a /usr/share/perl5/vendor_perl/Constants.pm manually.
@@ -406,17 +376,13 @@ Requires: perl(Scalar::Util)
 Requires: perl(Test::Harness)
 Requires: perl(Test::Simple)
 Requires: perl(ExtUtils::MakeMaker)
-Requires: perl(Pod::Plainer)
 Requires: perl(XML::LibXML)
-Requires: perl(Pod::LaTeX)
 Requires: perl(Pod::Checker)
-Requires: perl(B::Lint)
 Requires: perl(Text::Soundex)
 Requires: perl(Env)
 Requires: perl(Time::HiRes)
 Requires: perl(Locale::Maketext)
 Requires: perl(Fatal)
-Requires: perl(File::CheckTree)
 Requires: perl(Sys::Syslog)
 
 
@@ -507,10 +473,6 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir} $RPM_BUILD_ROOT/%{_lib} $RPM_BUILD_ROOT%{
          $RPM_BUILD_ROOT%{_sysconfdir}/lsb-release.d/ $RPM_BUILD_ROOT%{_sbindir} \
          $RPM_BUILD_ROOT%{_datadir}/lsb/%{lsbrelver}
 
-# manually add Locale::Constants. This module is just an alias of Locale::Codes::Constants
-mkdir -p $RPM_BUILD_ROOT%{perl_vendorlib}/Locale
-cp -p Constants.pm $RPM_BUILD_ROOT%{perl_vendorlib}/Locale
-cp -p Constants.pod $RPM_BUILD_ROOT%{perl_vendorlib}/Locale
 
 make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
 cd lsb-release-%{upstreamlsbrelver}
@@ -613,7 +575,7 @@ ln -snf ../../../sbin/chkconfig $RPM_BUILD_ROOT/usr/lib/lsb/remove_initd
 gcc $RPM_OPT_FLAGS -Os -fno-stack-protector -o redhat_lsb_trigger{.%{_target_cpu},.c} -DLSBSOVER='"%{lsbsover}"' \
   -DLDSO='"%{ldso}"' -DLSBLDSO='"/%{_lib}/%{lsbldso}"' -D_GNU_SOURCE
 %else
-gcc $RPM_OPT_FLAGS -Os -static -fno-stack-protector -o redhat_lsb_trigger{.%{_target_cpu},.c} -DLSBSOVER='"%{lsbsover}"' \
+gcc $RPM_OPT_FLAGS -Os -fno-stack-protector -o redhat_lsb_trigger{.%{_target_cpu},.c} -DLSBSOVER='"%{lsbsover}"' \
   -DLDSO='"%{ldso}"' -DLSBLDSO='"/%{_lib}/%{lsbldso}"' -D_GNU_SOURCE
 %endif
 install -p -m 700 redhat_lsb_trigger.%{_target_cpu} \
@@ -711,7 +673,6 @@ os.remove("%{_datadir}/lsb")
 #/bin/mailx
 /bin/redhat_lsb_init
 /usr/lib/lsb
-/%{_lib}/*so*
 /lib/lsb*
 %{_sbindir}/redhat_lsb_trigger.%{_target_cpu}
 %{_datadir}/lsb/%{lsbrelver}/modules/core
@@ -748,8 +709,6 @@ os.remove("%{_datadir}/lsb")
 %{_datadir}/lsb/%{lsbrelver}/modules/languages
 %{_datadir}/lsb/%{lsbrelver}/submodules/perl-%{lsbrelver}-%{archname}
 %{_datadir}/lsb/%{lsbrelver}/submodules/perl-%{lsbrelver}-noarch
-%{perl_vendorlib}/Locale/Constants.pm
-%{perl_vendorlib}/Locale/Constants.pod
 %{_datadir}/lsb/%{lsbrelver}/submodules/python-%{lsbrelver}-%{archname}
 %{_datadir}/lsb/%{lsbrelver}/submodules/python-%{lsbrelver}-noarch
 
@@ -812,7 +771,6 @@ os.remove("%{_datadir}/lsb")
 - fix the defines for arm and aarch64 (may need adjustment)
 
 * Thu May 23 2013 Ondrej Vasik <ovasik@redhat.com> - 4.1-14
-- require spax instead of pax (more POSIX compatible) (#965658)
 - require another set of perl modules in -languages (#959129)
 - polish a bit the nsswitch.conf hack - include mdns4_minimal (#915147)
 
