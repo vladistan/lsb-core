@@ -1,0 +1,12 @@
+diff -uNr redhat-lsb-4.1__orig/lsb-release-2.0/lsb_release redhat-lsb-4.1/lsb-release-2.0/lsb_release
+--- redhat-lsb-4.1__orig/lsb-release-2.0/lsb_release	2012-02-29 00:54:28.000000000 +0000
++++ redhat-lsb-4.1/lsb-release-2.0/lsb_release	2015-03-27 12:59:00.207774300 +0000
+@@ -72,7 +72,7 @@
+ INFO_DISTRIB_SUFFIX="release"                 # <distrib>-<suffix>
+ ALTERNATE_DISTRIB_FILE="/etc/debian_version"  # for Debian [based distrib]
+ ALTERNATE_DISTRIB_NAME="Debian"               #     "
+-CHECKFIRST="/etc/redhat-release"              # check it before file search
++CHECKFIRST="/etc/centos-release"              # check it before file search
+ 
+ # Defines our exit codes
+ EXIT_STATUS="0"                           # default = Ok :)
