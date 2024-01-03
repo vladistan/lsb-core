@@ -6,5 +6,5 @@ rm -rf ~/.rpmmacros
 echo '%_topdir ' $(pwd)  > ~/.rpmmacros
 rpmbuild -ba SPECS/redhat-lsb.spec
 
-tar -czf redhat-lsb-rpms.tgz
+tar --transform 's,^RPMS/,redhat-lsb/,' -czf redhat-lsb-rpms.tgz RPMS
 
